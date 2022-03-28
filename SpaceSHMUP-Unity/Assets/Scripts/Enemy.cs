@@ -3,7 +3,7 @@
  * Date Created: March 16, 2022
  * 
  * Last Edited by: Krieger
- * Last Edited: March 21, 2022
+ * Last Edited: March 28, 2022
  * 
  * Description: Enemy controler
 ****/
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       // Move();
+        Move();
 
         //Check if bounds check exists and the object is off the bottom of the screne
         if(bndCheck != null && bndCheck.offDown)
@@ -66,6 +66,7 @@ public class Enemy : MonoBehaviour
         //get schmovin
         tempPos.y -= speed * Time.deltaTime;
         pos = tempPos;
+        
         
     }
 }

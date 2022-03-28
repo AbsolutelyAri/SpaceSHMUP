@@ -3,7 +3,7 @@
  * Date Created: March 16, 2022
  * 
  * Last Edited by: Krieger
- * Last Edited: March 21, 2022
+ * Last Edited: March 28, 2022
  * 
  * Description: Hero ship controller
 ****/
@@ -112,9 +112,24 @@ public class Hero : MonoBehaviour
     //Taking Damage
     private void OnTriggerEnter(Collider other)
     {
-  
+        Transform rootT = other.gameObject.transform.root; //gets the topmost transform in the hierarchy attached to other (i.e. the parent)
+        GameObject go = rootT.gameObject; //object with that topmost transform component
+        
+        //check if this colliding object is the same as the last one
+        if(go == lastTriggerGo) { return; }
 
-
+        lastTriggerGo = go; //set the last triggering object equal to this object
+        
+        if(go.tag == "Enemy")
+        {
+            Debug.Log("Just hit some idiot named " + other.gameObject.name);
+            shieldLevel--;
+            Destroy(go); //
+        } 
+        else
+        {
+            Debug.Log("Collided with a poor pedestrian named " + other.gameObject.name);
+        }
     }//end OnTriggerEnter()
 
 }
