@@ -69,4 +69,22 @@ public class Enemy : MonoBehaviour
         
         
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Watch where you're going, idiot!");
+        GameObject otherGO = collision.gameObject;
+
+        if(otherGO.tag == "Projectile Hero")
+        {
+            Debug.Log("That " + otherGO + " fella is a real moron");
+            Destroy(otherGO);
+            Hero.SHIP.AddScore(score);
+            Destroy(gameObject);
+        }
+        else
+        {
+            Debug.Log("At least " + otherGO + " isn't a bullet fired from a gamer beam");
+        }
+    }
 }

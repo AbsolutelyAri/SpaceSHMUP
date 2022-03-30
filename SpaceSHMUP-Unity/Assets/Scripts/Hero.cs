@@ -39,6 +39,10 @@ public class Hero : MonoBehaviour
 
     GameManager gm; //reference to game manager
 
+    [Header("Projectile")]
+    public GameObject projectilePrefab;
+    public float projectileSpeed = 40f;
+
     [Header("Ship Movement")]
     public float speed = 10;
     public float rollMult = -45;
@@ -106,6 +110,14 @@ public class Hero : MonoBehaviour
         //rotate the ship for the sake of dynamic feel
         transform.rotation = Quaternion.Euler(yAxis * pitchMult, xAxis * rollMult, 0);
 
+        //Allow ship to fire
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Firing gamer beam");
+
+            TempFire();
+        }
+
     }//end Update()
 
 
@@ -131,5 +143,20 @@ public class Hero : MonoBehaviour
             Debug.Log("Collided with a poor pedestrian named " + other.gameObject.name);
         }
     }//end OnTriggerEnter()
+
+    void TempFire()
+    {
+        GameObject projGO = Instantiate<GameObject>(projectilePrefab);
+        projGO.transform.position = transform.position; //set projectile's position equal to the position of the ship
+
+        Rigidbody rb = projGO.GetComponent<Rigidbody>();
+        rb.velocity = Vector3.up * projectileSpeed;
+
+    }//end TempFire()
+
+    public void AddScore(int value)
+    {
+        gm.UpdateScore(value);
+    }
 
 }
