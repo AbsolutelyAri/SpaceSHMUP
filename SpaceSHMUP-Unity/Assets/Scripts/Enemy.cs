@@ -3,7 +3,7 @@
  * Date Created: March 16, 2022
  * 
  * Last Edited by: Krieger
- * Last Edited: March 28, 2022
+ * Last Edited: April 6, 2022
  * 
  * Description: Enemy controler
 ****/
@@ -72,19 +72,15 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Watch where you're going, idiot!");
-        GameObject otherGO = collision.gameObject;
+        GameObject other = collision.gameObject;
 
-        if(otherGO.tag == "Projectile Hero")
+        if(other.tag == "Projectile Hero")
         {
-            Debug.Log("That " + otherGO + " fella is a real moron");
-            Destroy(otherGO);
-            Hero.SHIP.AddScore(score);
-            Destroy(gameObject);
-        }
-        else
-        {
-            Debug.Log("At least " + otherGO + " isn't a bullet fired from a gamer beam");
+            Debug.Log("Hit by hero projectile " + other.name);
+
+            other.SetActive(false); //delete the projectile
+            GameManager.GM.UpdateScore(score);
+            Destroy(this.gameObject);
         }
     }
 }

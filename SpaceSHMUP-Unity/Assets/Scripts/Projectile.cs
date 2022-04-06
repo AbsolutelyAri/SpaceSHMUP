@@ -1,11 +1,11 @@
 /**** 
- * Created by: Krieger
- * Date Created: Mar 30, 2022
+ * Created by: Akram Taghavi-Burris
+ * Date Created: March 16, 2022
  * 
  * Last Edited by: Krieger
- * Last Edited: Mar 30, 2022
+ * Last Edited: April 6, 2022
  * 
- * Description: Projectile (it go pew)
+ * Description: Determines Projectile behavior
 ****/
 
 using System.Collections;
@@ -14,23 +14,22 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    /*** VARIABLES ***/
-    private BoundsCheck bndsCheck; //reference to the boundscheck component on the prefab
-    
-    
+    /**Variables**/
+    private BoundsCheck bndCheck; //reference to the bounds check component
+
     // Start is called before the first frame update
     void Awake()
     {
-        bndsCheck = GetComponent<BoundsCheck>();
-    }//end awake
+        bndCheck = GetComponent<BoundsCheck>();
+    }
 
     // Update is called once per frame
     void Update()
     {
-        //destroy self once off screen
-        if (bndsCheck.offUp || bndsCheck.offDown)
+        if (bndCheck.offUp)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            bndCheck.offUp = false; //reset the boundary settings so that it doesn't believe the projectile is off the screen
         }
-    }//end update
+    }
 }

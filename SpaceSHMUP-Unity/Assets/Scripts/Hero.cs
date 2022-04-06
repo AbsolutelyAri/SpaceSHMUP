@@ -3,7 +3,7 @@
  * Date Created: March 16, 2022
  * 
  * Last Edited by: Krieger
- * Last Edited: March 28, 2022
+ * Last Edited: April 6, 2022
  * 
  * Description: Hero ship controller
 ****/
@@ -38,10 +38,7 @@ public class Hero : MonoBehaviour
     #endregion
 
     GameManager gm; //reference to game manager
-
-    [Header("Projectile")]
-    public GameObject projectilePrefab;
-    public float projectileSpeed = 40f;
+    ObjectPool pool; //reference to object pool
 
     [Header("Ship Movement")]
     public float speed = 10;
@@ -51,9 +48,14 @@ public class Hero : MonoBehaviour
 
 
     [Space(10)]
+    [Header("Projectile Settings")]
+    
+    public float projectileSpeed = 40f; //speed of projectile
 
+    [Space(10)]
     private GameObject lastTriggerGo; //reference to the last triggering game object
    
+    [Header("ShieldSettings")]
     [SerializeField] //show in inspector
     private float _shieldLevel = 1; //level for shields
     public int maxShield = 4; //maximum shield level
@@ -90,6 +92,7 @@ public class Hero : MonoBehaviour
     private void Start()
     {
         gm = GameManager.GM; //find the game manager
+        pool = ObjectPool.POOL;
     }//end Start()
 
     // Update is called once per frame (page 551)
@@ -115,7 +118,7 @@ public class Hero : MonoBehaviour
         {
             Debug.Log("Firing gamer beam");
 
-            TempFire();
+            FireProjectile();
         }
 
     }//end Update()
@@ -144,19 +147,25 @@ public class Hero : MonoBehaviour
         }
     }//end OnTriggerEnter()
 
-    void TempFire()
-    {
-        GameObject projGO = Instantiate<GameObject>(projectilePrefab);
-        projGO.transform.position = transform.position; //set projectile's position equal to the position of the ship
-
-        Rigidbody rb = projGO.GetComponent<Rigidbody>();
-        rb.velocity = Vector3.up * projectileSpeed;
-
-    }//end TempFire()
+    
 
     public void AddScore(int value)
     {
         gm.UpdateScore(value);
+    }
+
+
+
+    private void FireProjectile()
+    {
+        GameObject projGO = pool.GetObject();
+        if(projGO != null)
+        {
+            projGO.transform.position = this.transform.position;
+            Rigidbody rb = projGO.GetComponent<Rigidbody>();
+            rb.velocity = Vector3.up * projectileSpeed;
+        }
+        
     }
 
 }
